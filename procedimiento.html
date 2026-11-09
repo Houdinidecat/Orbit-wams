@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>El proyecto · Órbita</title><meta name="description" content="Documentación académica de Órbita: base de datos, registro de misiones y preparación para Railway."><link rel="icon" href="assets/logo-orbita.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"></head>
+<body>
+<div id="contenedor">
+  <div id="header" role="banner"><a class="brand" href="index.html"><img src="assets/logo-orbita.svg" alt="Logo de Órbita: un planeta con anillos" width="48" height="48"><span>órbita<span class="brand-dot">.</span></span></a><nav aria-label="Navegación"><a href="registro.html">Registro de misiones</a><a href="index.html">Inicio <span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></nav></div>
+  <main class="document" id="contenido">
+    <p class="eyebrow">DOCUMENTACIÓN ACADÉMICA</p>
+    <h1>Explorar, registrar<br>y aprender.</h1>
+    <p class="lead">Una interfaz de exploración espacial con una base de datos y un registro de misiones para practicar las cinco operaciones solicitadas.</p>
+    <p class="doc-meta">Conceptualización de servicios en la nube<br>Elena Aurora Islas Martinez · Código: 212487959<br><a href="mailto:auroraislasmtz@gmail.com">auroraislasmtz@gmail.com</a></p>
+    <h2>1. Desarrollo del sitio</h2>
+    <p>Órbita utiliza <strong>Python con Flask</strong> para el servidor, <strong>SQLite</strong> para la base de datos y <strong>HTML5, CSS3 y JavaScript</strong> para la interfaz. El servidor entrega las páginas de <code>dist/</code> y procesa las operaciones mediante la API <code>/api/misiones</code>.</p>
+    <ul>
+      <li><strong>Contenedor:</strong> toda la interfaz se agrupa dentro de <code>&lt;div id="contenedor"&gt;</code>.</li>
+      <li><strong>Header:</strong> un <code>&lt;div id="header" role="banner"&gt;</code> contiene la imagen del logo de Órbita a la izquierda.</li>
+      <li><strong>Contenido:</strong> la página principal incluye un enlace al video <a href="https://www.youtube.com/watch?v=WeA7edXsU40" target="_blank" rel="noopener noreferrer">We Are NASA en YouTube</a>.</li>
+      <li><strong>Footer:</strong> contiene el curso, nombre completo, código y correo de contacto.</li>
+      <li><strong>Fondo:</strong> una imagen del centro galáctico de NASA, guardada en <code>dist/assets/universo.jpg</code>, se aplica mediante CSS.</li>
+    </ul>
+    <h2>2. Base de datos e interfaz gráfica</h2>
+    <p>El <a href="registro.html">Registro de misiones</a> permite realizar estas operaciones con datos guardados en SQLite:</p>
+    <ol>
+      <li><strong>Consultar todos los registros:</strong> ver y actualizar la lista de misiones.</li>
+      <li><strong>Consultar un registro individual:</strong> elegir <strong>Ver</strong> para abrir el detalle de una misión.</li>
+      <li><strong>Agregar registros:</strong> completar el formulario de nueva misión y guardar.</li>
+      <li><strong>Editar registros:</strong> seleccionar <strong>Editar</strong>, cambiar los campos y guardar.</li>
+      <li><strong>Eliminar registros:</strong> seleccionar <strong>Eliminar</strong> y confirmar el registro elegido.</li>
+    </ol>
+    <p><code>schema.sql</code> define la tabla <code>misiones</code>: <code>id</code>, <code>nombre</code>, <code>destino</code>, <code>fecha</code>, <code>estado</code>, <code>notas</code>, <code>creado_en</code> y <code>actualizado_en</code>. Los estados son Planificada, En curso y Completada; la fecha y las notas son opcionales.</p>
+    <p>La base de datos se prepara al iniciar el servidor. Localmente se guarda en <code>data/orbita.sqlite3</code>. Los registros permanecen entre ejecuciones mientras se conserve ese archivo. Esta aplicación usa datos de práctica compartidos y no incluye cuentas de usuario.</p>
+    <h2>3. Plataforma y recurso de introducción</h2>
+    <p>La plataforma seleccionada es <strong>Railway</strong>. Se consultó su <a href="https://docs.railway.com/quick-start" target="_blank" rel="noopener noreferrer">Quick Start Tutorial</a> como recurso de introducción equivalente a “Getting Started”, junto con las guías oficiales de <a href="https://docs.railway.com/builds/dockerfiles" target="_blank" rel="noopener noreferrer">Dockerfiles</a> y <a href="https://docs.railway.com/volumes" target="_blank" rel="noopener noreferrer">volúmenes persistentes</a>.</p>
+    <p>El <code>Dockerfile</code> incluido instala las dependencias de Python y ejecuta el servidor. Railway debe trabajar desde la raíz del repositorio para encontrarlo. Esta versión reemplaza la configuración estática anterior.</p>
+    <h2>4. Ejecutar en tu computadora</h2>
+    <p>Con Python 3.12 o posterior, abre PowerShell en la carpeta del proyecto y ejecuta, uno por uno:</p>
+    <ol>
+      <li><code>py -m venv .venv</code></li>
+      <li><code>.\.venv\Scripts\python.exe -m pip install -r requirements.txt</code></li>
+      <li><code>.\.venv\Scripts\python.exe app.py</code></li>
+    </ol>
+    <p>Abre <code>http://localhost:8080</code> y entra al registro. Mantén el servidor abierto mientras lo uses. Abrir el HTML con doble clic no ejecuta las operaciones de la base de datos.</p>
+    <h2>5. Procedimiento de publicación consultado</h2>
+    <p>Los pasos siguientes preparan una publicación futura, que realizará la estudiante por separado:</p>
+    <ol>
+      <li>Actualizar <code>Houdinidecat/Orbit</code> con el proyecto completo, conservando las carpetas <code>dist/</code> y <code>dist/assets/</code>. Retirar los archivos antiguos que se hubieran aplanado en la raíz y el <code>Staticfile</code> anterior.</li>
+      <li>Crear o actualizar el servicio de Railway desde ese repositorio y autorizar su acceso.</li>
+      <li>Dejar <strong>Root Directory</strong> en la raíz y usar el <code>Dockerfile</code>. Retirar los comandos personalizados del despliegue estático anterior.</li>
+      <li>Añadir un <strong>Volume</strong> al servicio, montado en <code>/data</code>. La imagen configura <code>DATABASE_PATH=/data/orbita.sqlite3</code> para guardar allí SQLite y conservar los registros al volver a desplegar.</li>
+      <li>Mantener <strong>una sola réplica</strong>. Desplegar y revisar los registros del servicio y el endpoint de salud <code>/healthz</code>.</li>
+      <li>Generar un dominio, abrirlo y probar las cinco operaciones. Comprobar también que los registros permanezcan después de reiniciar.</li>
+    </ol>
+    <p>GitHub conserva el código y Railway ejecuta la aplicación. No se necesita GitHub Pages.</p>
+    <p class="doc-note"><strong>Alcance:</strong> esta entrega incluye la interfaz, la base de datos y su configuración. No ha ejecutado un despliegue ni creado recursos en Railway.</p>
+    <h2>Fuentes y créditos</h2>
+    <ul>
+      <li>Railway: <a href="https://docs.railway.com/quick-start" target="_blank" rel="noopener noreferrer">Quick Start Tutorial</a>, <a href="https://docs.railway.com/builds/dockerfiles" target="_blank" rel="noopener noreferrer">Dockerfiles</a> y <a href="https://docs.railway.com/volumes" target="_blank" rel="noopener noreferrer">Using Volumes</a>.</li>
+      <li>NASA: <a href="https://science.nasa.gov/resource/we-are-nasa/" target="_blank" rel="noopener noreferrer">We Are NASA</a>.</li>
+      <li>Imagen: <a href="https://images.nasa.gov/details/PIA12348" target="_blank" rel="noopener noreferrer">NASA, PIA12348</a>. Crédito: NASA / JPL-Caltech / ESA / CXC / STScI. Imagen reducida y recortada para la presentación web.</li>
+      <li>El logo de Órbita es una ilustración original creada para este proyecto académico. El sitio no representa a NASA.</li>
+    </ul>
+    <p><a href="registro.html">Abrir el Registro de misiones →</a></p>
+    <p><a href="index.html">← Volver a Órbita</a></p>
+  </main>
+  <footer class="section-padding"><div class="identity-grid"><div><span class="footer-label">CURSO</span><p>Conceptualización de servicios en la nube</p></div><div><span class="footer-label">ELABORADO POR</span><p>Elena Aurora Islas Martinez</p></div><div><span class="footer-label">CÓDIGO</span><p>212487959</p></div><div><span class="footer-label">CONTACTO</span><a class="email" href="mailto:auroraislasmtz@gmail.com">auroraislasmtz@gmail.com</a></div></div></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+ÓRBITA — REGISTRO DE MISIONES CON BASE DE DATOS
+
+Autora: Elena Aurora Islas Martinez
+Curso: Conceptualización de servicios en la nube
+Código: 212487959
+Contacto: auroraislasmtz@gmail.com
+
+EJECUTAR EN WINDOWS
+1. Instala Python 3.12 o posterior si todavía no lo tienes.
+2. Extrae todo el proyecto y abre PowerShell en su carpeta principal.
+3. Ejecuta estos comandos, uno por uno:
+
+   py -m venv .venv
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   .\.venv\Scripts\python.exe app.py
+
+4. Abre http://localhost:8080 y entra a Registro de misiones.
+   También puedes visitar http://localhost:8080/registro.html.
+5. Conserva PowerShell abierto mientras usas el sitio. Ctrl+C lo detiene.
+
+El registro requiere el servidor: no funciona abriendo el HTML con doble clic.
+No es necesario activar el entorno virtual para ejecutar estos comandos.
+
+USAR EL REGISTRO
+Consulta la lista completa, abre una misión con Ver, agrega una nueva,
+edita sus datos o elimínala después de confirmar. Los campos son nombre,
+destino, fecha opcional, estado y notas. Es un registro compartido de práctica,
+sin cuentas de usuario; usa datos de ejemplo.
+
+BASE DE DATOS
+El servidor usa SQLite y crea la base de datos al iniciar. En tu computadora,
+se guarda en data/orbita.sqlite3. Conserva ese archivo para mantener los datos;
+no lo subas a GitHub. schema.sql contiene la estructura de la tabla misiones.
+
+PUBLICAR EN RAILWAY
+Consulta los pasos completos del README.md. Sube el proyecto conservando las
+carpetas dist/ y dist/assets/. Si existían archivos del sitio sueltos en la
+raíz del repositorio, retira esas versiones antiguas y el Staticfile anterior.
+No subas .venv/ ni archivos de base de datos.
+Railway debe usar el Dockerfile desde la raíz del repositorio, sin antiguos
+comandos de construcción o inicio estáticos. Añade un Volume montado en /data
+y conserva una sola réplica. La imagen usa DATABASE_PATH=/data/orbita.sqlite3.
+Sin ese volumen, los registros pueden perderse al volver a desplegar.
+El control de salud es /healthz.
+
+GitHub almacena los archivos; Railway ejecuta la aplicación. No necesitas
+GitHub Pages. La estudiante hará el despliegue por separado; esta entrega no
+ha publicado la aplicación.
+
+REFERENCIAS
+https://docs.railway.com/quick-start
+https://docs.railway.com/builds/dockerfiles
+https://docs.railway.com/volumes

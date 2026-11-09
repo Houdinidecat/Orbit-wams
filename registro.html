@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consulta, agrega, edita y elimina las misiones de tu bitácora Órbita.">
+  <meta name="theme-color" content="#111115">
+  <title>Registro de misiones · Órbita</title>
+  <link rel="icon" href="assets/logo-orbita.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="crud.css">
+  <script src="crud.js" defer></script>
+</head>
+<body>
+  <div id="contenedor">
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <div id="header" role="banner">
+      <a class="brand" href="index.html" aria-label="Órbita, inicio"><img src="assets/logo-orbita.svg" alt="Logo de Órbita: un planeta con anillos" width="48" height="48"><span>órbita<span class="brand-dot">.</span></span></a>
+      <nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="registro.html" aria-current="page">Misiones</a><a class="nav-project" href="procedimiento.html">El proyecto <span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></nav>
+    </div>
+
+    <main id="contenido" class="registry">
+      <section class="registry-hero" aria-labelledby="registry-title">
+        <div><p class="eyebrow">TU PRÓXIMO DESCUBRIMIENTO</p><h1 id="registry-title">Registro de <em>misiones.</em></h1><p>Una idea, un destino y un lugar para llevar la cuenta.<br>Organiza cada paso de tu próxima exploración.</p></div>
+        <span class="shared-pill"><span class="status-dot" aria-hidden="true"></span> Registros de práctica compartidos</span>
+      </section>
+
+      <div class="registry-workspace">
+        <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+        <noscript><p class="feedback feedback-error">Activa JavaScript en tu navegador para utilizar el registro de misiones.</p></noscript>
+
+        <section class="editor-panel" id="editor" aria-labelledby="editor-title" tabindex="-1">
+          <div class="panel-heading"><p id="editor-eyebrow" class="eyebrow muted">01 — UNA NUEVA IDEA</p><h2 id="editor-title">Agregar registro</h2><p id="editor-description">Completa los datos de tu misión. Los campos con * son obligatorios.</p></div>
+          <form id="mission-form" novalidate>
+            <div class="field"><label for="nombre">Nombre de la misión <span aria-hidden="true">*</span></label><input id="nombre" name="nombre" type="text" required maxlength="120" autocomplete="off" placeholder="Por ejemplo: Observar la Luna" aria-describedby="error-nombre"><span id="error-nombre" class="field-error"></span></div>
+            <div class="field"><label for="destino">Destino <span aria-hidden="true">*</span></label><input id="destino" name="destino" type="text" required maxlength="100" autocomplete="off" placeholder="Por ejemplo: La Luna" aria-describedby="error-destino"><span id="error-destino" class="field-error"></span></div>
+            <div class="form-row"><div class="field"><label for="fecha">Fecha objetivo</label><input id="fecha" name="fecha" type="date" aria-describedby="error-fecha"><span id="error-fecha" class="field-error"></span></div><div class="field"><label for="estado">Estado <span aria-hidden="true">*</span></label><select id="estado" name="estado" required aria-describedby="error-estado"><option value="Planificada">Planificada</option><option value="En curso">En curso</option><option value="Completada">Completada</option></select><span id="error-estado" class="field-error"></span></div></div>
+            <div class="field"><label for="notas">Notas</label><textarea id="notas" name="notas" rows="4" maxlength="2000" placeholder="¿Qué te gustaría descubrir?" aria-describedby="error-notas"></textarea><span id="error-notas" class="field-error"></span></div>
+            <div class="form-actions"><button class="control primary-control" id="save-mission" type="submit">Agregar misión</button><button class="control quiet-control" id="cancel-edit" type="button" hidden>Cancelar edición</button></div>
+          </form>
+        </section>
+
+        <section class="records-panel" aria-labelledby="records-title">
+          <div class="records-heading"><div><p class="eyebrow muted">02 — TU BITÁCORA</p><h2 id="records-title">Misiones registradas</h2></div><span class="record-count" id="record-count">—</span></div>
+          <div class="records-tools"><button class="control secondary-control" id="refresh-records" type="button">Todos los registros <span aria-hidden="true">↻</span></button><form id="lookup-form" class="lookup-form"><label for="lookup-id">Consultar por ID</label><div><input id="lookup-id" name="id" type="number" min="1" max="2147483647" step="1" placeholder="ID" required inputmode="numeric"><button class="control secondary-control" type="submit">Consultar</button></div></form></div>
+          <p id="loading-records" class="loading-message" role="status">Consultando registros…</p>
+          <div class="records-region" role="region" aria-label="Listado de misiones" tabindex="0">
+            <table class="records-table"><caption class="sr-only">Todas las misiones y sus acciones de consulta, edición y eliminación</caption><thead><tr><th scope="col">ID / Misión</th><th scope="col">Fecha / Estado</th><th scope="col">Acciones</th></tr></thead><tbody id="records-body"></tbody></table>
+          </div>
+          <div id="empty-records" class="empty-state" hidden><span class="empty-orbit" aria-hidden="true">◎</span><h3>Tu bitácora comienza aquí.</h3><p>Agrega una misión y aparecerá en este espacio.</p><button type="button" id="empty-add" class="control secondary-control">Agregar la primera misión <span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button></div>
+          <p class="registry-footnote">Cada misión tiene un ID único para consultarla individualmente.</p>
+        </section>
+      </div>
+    </main>
+
+    <footer id="proyecto" class="section-padding"><div class="footer-top"><div class="footer-brand">Cada registro,<br>un nuevo <em>destino.</em></div><a class="project-link" href="procedimiento.html">Sobre este proyecto <span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div><div class="identity-grid"><div><span class="footer-label">CURSO</span><p>Conceptualización de<br>servicios en la nube</p></div><div><span class="footer-label">ELABORADO POR</span><p>Elena Aurora Islas Martinez</p></div><div><span class="footer-label">CÓDIGO</span><p>212487959</p></div><div><span class="footer-label">CONTACTO</span><a class="email" href="mailto:auroraislasmtz@gmail.com">auroraislasmtz@gmail.com</a></div></div><div class="footer-bottom"><span>ÓRBITA © 2026 · PROYECTO ACADÉMICO</span><a href="index.html">Volver a explorar <span aria-hidden="true"><svg class="arrow-icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div></footer>
+
+    <dialog id="detail-dialog" class="mission-dialog" aria-labelledby="detail-title"><div class="dialog-heading"><div><p class="eyebrow muted">CONSULTA INDIVIDUAL</p><h2 id="detail-title">Detalle de la misión</h2></div><button id="close-detail" type="button" class="icon-control" aria-label="Cerrar detalle">×</button></div><div id="detail-content" aria-live="polite"></div><div class="dialog-actions"><button id="detail-edit" type="button" class="control primary-control" hidden>Editar registro</button><button id="detail-done" type="button" class="control secondary-control">Cerrar</button></div></dialog>
+    <dialog id="delete-dialog" class="mission-dialog delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description"><p class="eyebrow muted">ELIMINAR REGISTRO</p><h2 id="delete-title">¿Eliminar esta misión?</h2><p id="delete-description"></p><p class="delete-note">El registro se eliminará de la bitácora. Esta acción no se puede deshacer.</p><p id="delete-error" class="field-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-delete" type="button" class="control secondary-control" autofocus>Conservar misión</button><button id="confirm-delete" type="button" class="control danger-control">Eliminar misión</button></div></dialog>
+  </div>
+</body>
+</html>

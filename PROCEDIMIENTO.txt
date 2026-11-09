@@ -1,0 +1,88 @@
+ÓRBITA — PROCEDIMIENTO Y REGISTRO DE MISIONES
+
+Curso: Conceptualización de servicios en la nube
+Estudiante: Elena Aurora Islas Martinez
+Código: 212487959
+Correo: auroraislasmtz@gmail.com
+
+1. TECNOLOGÍAS Y ESTRUCTURA
+Órbita mantiene su interfaz de exploración espacial y añade una base de datos
+real con una interfaz gráfica de gestión. Se utiliza Python con Flask para el
+servidor y la API, SQLite para almacenar registros y HTML5, CSS3 y JavaScript
+para la presentación y las operaciones de la interfaz.
+
+El servidor app.py sirve las páginas de dist/ y atiende /api/misiones. El
+archivo schema.sql define la tabla misiones con los campos id, nombre,
+destino, fecha, estado, notas, creado_en y actualizado_en. El id identifica
+cada registro; fecha y notas son opcionales. Los estados disponibles son
+Planificada, En curso y Completada.
+
+La aplicación crea su base de datos al iniciar. En la computadora, el archivo
+es data/orbita.sqlite3. Los datos permanecen entre ejecuciones al conservar
+ese archivo; la variable DATABASE_PATH permite elegir otra ubicación. No se
+utiliza localStorage como sustituto de la base de datos.
+
+2. INTERFAZ Y OPERACIONES SOLICITADAS
+La página /registro.html permite:
+- Consultar todos los registros: ver y actualizar la lista de misiones.
+- Consultar registros individuales: usar Ver para abrir un detalle por id.
+- Agregar registros: completar y guardar el formulario de nueva misión.
+- Editar registros: seleccionar Editar, modificar los campos y guardar.
+- Eliminar registros: seleccionar Eliminar y confirmar el registro elegido.
+
+Las operaciones corresponden a GET y POST /api/misiones, y GET, PUT y DELETE
+/api/misiones/<id>. El servidor valida los datos antes de guardarlos y devuelve
+errores en español. El registro es compartido para práctica y no incluye
+cuentas de usuario; debe utilizarse con información de ejemplo.
+
+La interfaz conserva los elementos del sitio original: contenedor principal,
+div para el header, imagen del logo a la izquierda, enlace al video We Are
+NASA en YouTube, imagen de fondo y footer con los datos de identificación.
+Los recursos gráficos se guardan dentro de dist/assets/.
+
+3. RECURSO GETTING STARTED CONSULTADO
+Se seleccionó Railway como plataforma. Se consultó su recurso oficial de
+introducción “Quick Start Tutorial”, equivalente a “Getting Started”:
+https://docs.railway.com/quick-start
+Se revisó la conexión de un repositorio y el despliegue desde GitHub.
+También se consultaron las referencias oficiales para Docker y volúmenes:
+https://docs.railway.com/builds/dockerfiles
+https://docs.railway.com/volumes
+
+Python es compatible con el contenedor incluido. requirements.txt declara
+Flask y Gunicorn. Dockerfile prepara la aplicación y railway.toml configura
+su ejecución y el endpoint de salud /healthz.
+
+4. EJECUCIÓN LOCAL EN WINDOWS
+Con Python 3.12 o posterior, abre PowerShell en la carpeta del proyecto:
+
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe app.py
+
+Abre http://localhost:8080/registro.html. El servidor debe continuar abierto
+para usar el registro; abrir el HTML con doble clic no ejecuta la API.
+
+5. PROCEDIMIENTO PARA LA FUTURA PUBLICACIÓN
+La estudiante realizará el despliegue por separado. Estos pasos no afirman
+que la aplicación ya esté publicada:
+1) Subir el proyecto completo a Houdinidecat/Orbit. Conservar dist/ y
+   dist/assets/ como carpetas; no aplanar sus archivos en la raíz.
+2) Retirar de la raíz las versiones aplanadas antiguas de index.html,
+   styles.css, procedimiento.html, logo-orbita.svg y universo.jpg, si existen,
+   y eliminar el Staticfile anterior. No subir .venv/ ni bases de datos.
+3) Crear o actualizar el servicio de Railway desde ese repositorio.
+4) Mantener Root Directory en la raíz y usar el Dockerfile incluido. Retirar
+   comandos personalizados antiguos del despliegue estático.
+5) Añadir un Volume al servicio con ruta de montaje /data. La imagen configura
+   DATABASE_PATH=/data/orbita.sqlite3. El volumen conserva la base de datos al
+   reiniciar o volver a desplegar; debe configurarse antes de guardar datos
+   que se deseen mantener.
+6) Mantener una sola réplica para esta aplicación SQLite. Revisar los
+   registros del despliegue y el control de salud /healthz.
+7) Generar un dominio en Railway y abrirlo en el navegador.
+8) Probar las cinco operaciones y comprobar la persistencia tras reiniciar.
+
+GitHub conserva el código fuente y Railway ejecuta la aplicación. No es
+necesario activar GitHub Pages. Esta entrega incluye el código y la
+documentación; no ha realizado un despliegue ni creado recursos en Railway.
